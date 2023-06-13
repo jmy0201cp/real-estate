@@ -1,4 +1,4 @@
-package com.realstate.home.domain;
+package com.realstate.home.domain.entity;
 
 
 import lombok.*;
