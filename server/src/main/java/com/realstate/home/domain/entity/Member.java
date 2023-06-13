@@ -1,11 +1,15 @@
 package com.realstate.home.domain.entity;
 
 
+import com.realstate.home.dto.request.MemberRequest;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -13,6 +17,8 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@DynamicInsert // 컬럼의 지정된 default 값을 적용시키며 INSERT 할 때 사용
+@DynamicUpdate
 @Table(name="member")
 @SQLDelete(sql="UPDATE member SET is_deleted = true WHERE id=?")
 @Where(clause = "is_deleted = false")

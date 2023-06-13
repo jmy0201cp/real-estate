@@ -3,6 +3,8 @@ package com.realstate.home.domain.entity;
 
 import com.realstate.home.domain.ContractType;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -15,6 +17,8 @@ import java.math.BigDecimal;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@DynamicInsert
+@DynamicUpdate
 @Table(name="room")
 @SQLDelete(sql="UPDATE room SET is_deleted = true WHERE id=?")
 @Where(clause = "is_deleted = false")
