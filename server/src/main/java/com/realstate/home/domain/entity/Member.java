@@ -49,4 +49,17 @@ public class Member extends BaseEntity {
 
     @Column(columnDefinition = "varchar(5) DEFAULT NULL COMMENT '우편번호'")
     private String zipCode;
+
+
+    public static Member of(MemberRequest request) {
+        Member member = new Member();
+        member.setMemberName(request.getMemberName());
+        member.setPhoneNumber(request.getPhoneNumber());
+        member.setEmail(request.getEmail());
+        member.setPassword(request.getPassword());
+        member.setAddress(request.getAddress());
+        member.setAddressDetail(request.getAddressDetail());
+        member.setZipCode(request.getZipCode());
+        return member;
+    }
 }
