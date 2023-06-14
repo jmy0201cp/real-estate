@@ -1,5 +1,6 @@
 package com.realstate.home.controller;
 
+import com.realstate.home.dto.Response;
 import com.realstate.home.dto.request.MemberRequest;
 import com.realstate.home.dto.response.MemberResponse;
 import com.realstate.home.service.MemberService;
@@ -16,7 +17,7 @@ public class MemberController {
 
     private final MemberService memberService;
     @PostMapping("/signup")
-    public MemberResponse join(@RequestBody MemberRequest request) {
-        return memberService.signup(request);
+    public Response<MemberResponse> join(@RequestBody MemberRequest request) {
+        return Response.success(memberService.signup(request));
     }
 }
