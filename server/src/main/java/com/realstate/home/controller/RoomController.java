@@ -5,10 +5,9 @@ import com.realstate.home.dto.request.RoomRequest;
 import com.realstate.home.dto.response.RoomResponse;
 import com.realstate.home.service.RoomService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,5 +19,15 @@ public class RoomController {
     @PostMapping
     public Response<RoomResponse> create(@RequestBody RoomRequest request) {
         return Response.success(roomService.create(request));
+    }
+
+    @GetMapping("/{roomId}")
+    public Response<RoomResponse> getRoomById(@PathVariable Long roomId) {
+        return Response.success(roomService.getRoomById(roomId));
+    }
+
+    @GetMapping
+    public Response<List<RoomResponse>> getRoomList() {
+        return Response.success(roomService.getRoomList());
     }
 }
