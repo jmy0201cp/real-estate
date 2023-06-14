@@ -1,7 +1,9 @@
 package com.realstate.home.controller;
 
 import com.realstate.home.dto.Response;
+import com.realstate.home.dto.request.MemberLoginRequest;
 import com.realstate.home.dto.request.MemberRequest;
+import com.realstate.home.dto.response.MemberLoginResponse;
 import com.realstate.home.dto.response.MemberResponse;
 import com.realstate.home.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -19,5 +21,10 @@ public class MemberController {
     @PostMapping("/signup")
     public Response<MemberResponse> join(@RequestBody MemberRequest request) {
         return Response.success(memberService.signup(request));
+    }
+
+    @PostMapping("/login")
+    public Response<MemberLoginResponse> login(@RequestBody MemberLoginRequest request) {
+        return Response.success(memberService.login(request));
     }
 }
