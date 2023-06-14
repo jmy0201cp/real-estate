@@ -19,3 +19,8 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
+jwt:
+  secret-key: real_estate.find-my-perfect-room.secret-key
+  token:
+    expired-time-ms: 2592000000
