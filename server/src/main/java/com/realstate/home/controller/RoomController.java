@@ -6,6 +6,7 @@ import com.realstate.home.dto.response.RoomResponse;
 import com.realstate.home.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,6 +20,12 @@ public class RoomController {
     @PostMapping
     public Response<RoomResponse> create(@RequestBody RoomRequest request) {
         return Response.success(roomService.create(request));
+    }
+
+    @PostMapping("/{roomId}")
+    public Response<Void> saveFile(@PathVariable Long roomId, MultipartFile file) {
+        roomService.saveFile(roomId, file);
+        return Response.success();
     }
 
     @GetMapping("/{roomId}")
