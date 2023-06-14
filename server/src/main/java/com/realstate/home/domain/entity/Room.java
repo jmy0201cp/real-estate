@@ -2,6 +2,7 @@ package com.realstate.home.domain.entity;
 
 
 import com.realstate.home.domain.ContractType;
+import com.realstate.home.dto.request.RoomRequest;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -59,5 +60,20 @@ public class Room extends BaseEntity {
 
     @Column(columnDefinition = "varchar(255) DEFAULT NULL COMMENT '상세정보'")
     private String details;
+
+    public static Room of(RoomRequest request) {
+        Room room = new Room();
+        room.setUrl(request.getUrl());
+        room.setContractType(request.getContractType());
+        room.setPrice(request.getPrice());
+        room.setAddress(request.getAddress());
+        room.setAddressDetail(request.getAddressDetail());
+        room.setManagementFee(request.getManagementFee());
+        room.setElevatorYn(request.getElevatorYn());
+        room.setRoomCount(request.getRoomCount());
+        room.setFloor(request.getFloor());
+        room.setDetails(request.getDetails());
+        return room;
+    }
 
 }
