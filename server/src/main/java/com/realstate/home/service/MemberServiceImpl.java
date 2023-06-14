@@ -9,6 +9,7 @@ import com.realstate.home.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +18,7 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder encoder;
 
-    @Override
+    @Transactional
     public MemberResponse signup(MemberRequest request) {
        memberRepository.findByMemberName(request.getMemberName()).ifPresent(it -> {
             throw new HomeException(ErrorCode.DUPLICATED_DATA);
