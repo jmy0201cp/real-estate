@@ -21,7 +21,7 @@ import java.math.BigDecimal;
 @DynamicInsert
 @DynamicUpdate
 @Table(name="room")
-@SQLDelete(sql="UPDATE room SET is_deleted = true WHERE id=?")
+@SQLDelete(sql="UPDATE room SET is_deleted = true WHERE room_id=?")
 @Where(clause = "is_deleted = false")
 public class Room extends BaseEntity {
 

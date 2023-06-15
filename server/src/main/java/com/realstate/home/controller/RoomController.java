@@ -37,4 +37,16 @@ public class RoomController {
     public Response<List<RoomResponse>> getRoomList() {
         return Response.success(roomService.getRoomList());
     }
+
+    @PutMapping("/{roomId}")
+    public Response<RoomResponse> update(@PathVariable Long roomId, @RequestBody RoomRequest request) {
+        return Response.success(roomService.update(roomId, request));
+    }
+
+    @DeleteMapping("/{roomId}")
+    public Response<Void> delete(@PathVariable Long roomId) {
+        roomService.delete(roomId);
+        return Response.success();
+    }
+
 }
