@@ -1,10 +1,16 @@
+server:
+  port: 8080
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/realestate?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&characterSetResults=UTF-8&useSSL=true
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/realestate?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     username: root
     password: root123
-
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+      location: /Users/miyoung/projects/files
   jpa:
     database: mysql
     show-sql: true
@@ -14,3 +20,11 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
+jwt:
+  secret-key: real_estate.find-my-perfect-room.secret-key
+  token:
+    expired-time-ms: 2592000000
