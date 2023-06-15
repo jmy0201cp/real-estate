@@ -27,6 +27,7 @@ public class RoomResponse {
     private String details;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Boolean isDeleted;
 
     public static RoomResponse fromEntity(Room room) {
         return new RoomResponse(
@@ -42,7 +43,8 @@ public class RoomResponse {
                 room.getFloor(),
                 room.getDetails(),
                 room.getCreatedAt(),
-                room.getUpdatedAt()
+                room.getUpdatedAt(),
+                room.getIsDeleted()
         );
     }
 }
