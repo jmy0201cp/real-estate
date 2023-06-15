@@ -44,9 +44,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public void saveFile(Long roomId, MultipartFile file) {
         //해당 아이디의 방이 존재하는지
-        Room room = roomRepository.findById(roomId).orElseThrow(() -> {
-           throw new HomeException(ErrorCode.DO_NOT_FOUND);
-        });
+        Room room = getRoomEntityOrExceptionById(roomId);
 
         try {
             String roomPath = uploadPath.concat("/" + roomId);
@@ -72,9 +70,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public RoomResponse getRoomById(Long roomId) {
-        Room room = roomRepository.findById(roomId).orElseThrow(() -> {
-            throw new HomeException(ErrorCode.DO_NOT_FOUND);
-        });
+        Room room = getRoomEntityOrExceptionById(roomId);
 
         return RoomResponse.fromEntity(room);
     }
@@ -88,9 +84,7 @@ public class RoomServiceImpl implements RoomService {
     @Transactional
     @Override
     public RoomResponse update(Long roomId, RoomRequest request) {
-        roomRepository.findById(roomId).orElseThrow(() -> {
-            throw new HomeException(ErrorCode.DO_NOT_FOUND);
-        });
+        getRoomEntityOrExceptionById(roomId);
 
         Room entity = Room.of(request);
         entity.setRoomId(roomId);
@@ -102,10 +96,13 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void delete(Long roomId) {
-        Room room = roomRepository.findById(roomId).orElseThrow(() -> {
+        Room room = getRoomEntityOrExceptionById(roomId);
+        roomRepository.delete(room);
+    }
+
+    private Room getRoomEntityOrExceptionById(Long roomId) {
+       return roomRepository.findById(roomId).orElseThrow(() -> {
             throw new HomeException(ErrorCode.DO_NOT_FOUND);
         });
-
-        roomRepository.delete(room);
     }
 }
