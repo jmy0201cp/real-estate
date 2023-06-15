@@ -142,5 +142,50 @@ class RoomServiceImplTest {
 //        Assertions.assertDoesNotThrow(()->roomService.getRoomList());
     }
 
+    @Test
+    void Should_ResponseRoomEntity_When_RequestUpdateRoomById() {
+        Long findId = 2L;
+
+        //given
+        Room entity = Room.builder()
+                .roomId(2L)
+                .url("dkfhse/gdsel.g")
+                .contractType(ContractType.JEONSE)
+                .price(BigDecimal.valueOf(125000000))
+                .managementFee(BigDecimal.valueOf(70000))
+                .build();
+
+        RoomRequest request = RoomRequest.builder()
+                .url("dkfhse/gdsel.g")
+                .contractType(ContractType.MONTHLY)
+                .price(BigDecimal.valueOf(125000000))
+                .managementFee(BigDecimal.valueOf(70000))
+                .build();
+
+        when(roomRepository.findById(findId)).thenReturn(Optional.of(entity));
+        when(roomRepository.save(ArgumentMatchers.any(Room.class))).thenReturn(entity);
+
+        //when
+        RoomResponse actual = roomService.update(findId, request);
+
+        //then
+        assertThat(actual.getRoomId()).isSameAs(findId);
+        assertThat(actual.getContractType()).isSameAs(request.getContractType());
+    }
+
+    @Test
+    void Should_DeleteRoom_When_RequestDeleteRoomById() {
+        Long findId = 2L;
+
+        //given
+        Room entity = Room.builder()
+                .roomId(2L)
+                .build();
+
+        when(roomRepository.findById(findId)).thenReturn(Optional.of(entity));
+
+        //when then
+        Assertions.assertDoesNotThrow(() -> roomService.delete(findId));
+    }
 
 }
