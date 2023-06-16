@@ -1,12 +1,13 @@
+import { Outlet } from "react-router-dom";
 import "./App.css";
+import Header from "./component/Header";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1> 여기 리액트입니다. </h1>
-      </header>
-    </div>
+    <>
+      <Header />
+      <Outlet />
+    </>
   );
 }
 
