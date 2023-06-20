@@ -13,12 +13,12 @@ export default function Room({ room }) {
 
   return (
     <li
-      className="m-1 w-1/3 border border-gray"
-      onClick={() => navigate(`/rooms/${room.id}`, { state: room })}
+      className="rounded-lg shadow-md overfolw-hidden cursor-pointer max-h-[365px]"
+      onClick={() => navigate(`/rooms/${room.roomId}`, { state: room })}
     >
-      <img src={room.url} alt="" className="p-2 w-full h-80" />
-      <div className="px-2 flex items-center justify-between">
-        <p className="p-2">{room.address}</p>
+      <img src={room.url} alt="" className="w-full h-80" />
+      <div className="mt-2 px-2 text-sm flex justify-between items-center">
+        <p className="truncate p-2">{room.address}</p>
         <span>{types[room.contractType]}</span>
       </div>
     </li>
