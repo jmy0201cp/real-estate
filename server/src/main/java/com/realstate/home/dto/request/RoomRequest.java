@@ -1,6 +1,7 @@
 package com.realstate.home.dto.request;
 
 import com.realstate.home.domain.ContractType;
+import com.realstate.home.domain.RoomType;
 import lombok.*;
 import java.math.BigDecimal;
 
@@ -11,6 +12,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class RoomRequest {
     private String url;
+    private RoomType roomType;
     private ContractType contractType;
     private BigDecimal price;
     private String address;
