@@ -1,10 +1,13 @@
 package com.realstate.home.controller;
 
+import com.realstate.home.domain.RoomType;
 import com.realstate.home.dto.Response;
 import com.realstate.home.dto.request.RoomRequest;
 import com.realstate.home.dto.response.RoomResponse;
 import com.realstate.home.service.RoomService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,8 +37,8 @@ public class RoomController {
     }
 
     @GetMapping
-    public Response<List<RoomResponse>> getRoomList() {
-        return Response.success(roomService.getRoomList());
+    public Response<List<RoomResponse>> getRoomList(@RequestParam RoomType roomType) {
+        return Response.success(roomService.getRoomList(roomType));
     }
 
     @PutMapping("/{roomId}")

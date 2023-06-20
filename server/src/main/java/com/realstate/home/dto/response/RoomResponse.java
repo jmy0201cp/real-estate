@@ -1,6 +1,7 @@
 package com.realstate.home.dto.response;
 
 import com.realstate.home.domain.ContractType;
+import com.realstate.home.domain.RoomType;
 import com.realstate.home.domain.entity.Member;
 import com.realstate.home.domain.entity.Room;
 import lombok.*;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 public class RoomResponse {
     private Long roomId;
     private String url;
+    private RoomType roomType;
     private ContractType contractType;
     private BigDecimal price;
     private String address;
@@ -33,6 +35,7 @@ public class RoomResponse {
         return new RoomResponse(
                 room.getRoomId(),
                 room.getUrl(),
+                room.getRoomType(),
                 room.getContractType(),
                 room.getPrice(),
                 room.getAddress(),

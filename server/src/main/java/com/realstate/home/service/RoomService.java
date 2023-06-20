@@ -1,5 +1,6 @@
 package com.realstate.home.service;
 
+import com.realstate.home.domain.RoomType;
 import com.realstate.home.dto.request.RoomRequest;
 import com.realstate.home.dto.response.RoomResponse;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,7 +15,7 @@ public interface RoomService {
 
     RoomResponse getRoomById(Long roomId);
 
-    List<RoomResponse> getRoomList();
+    List<RoomResponse> getRoomList(RoomType roomType);
 
     RoomResponse update(Long roomId, RoomRequest request);
 

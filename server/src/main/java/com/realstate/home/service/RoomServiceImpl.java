@@ -1,13 +1,18 @@
 package com.realstate.home.service;
 
+import com.realstate.home.domain.RoomType;
 import com.realstate.home.domain.entity.File;
+import com.realstate.home.domain.entity.Member;
 import com.realstate.home.domain.entity.Room;
+import com.realstate.home.domain.entity.Wishlist;
 import com.realstate.home.dto.request.RoomRequest;
 import com.realstate.home.dto.response.RoomResponse;
 import com.realstate.home.exception.ErrorCode;
 import com.realstate.home.exception.HomeException;
 import com.realstate.home.repository.FileRepository;
+import com.realstate.home.repository.MemberRepository;
 import com.realstate.home.repository.RoomRepository;
+import com.realstate.home.repository.WishRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,6 +32,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RoomServiceImpl implements RoomService {
 
+    private final MemberRepository memberRepository;
     private final RoomRepository roomRepository;
     private final FileRepository fileRepository;
 
@@ -76,8 +82,13 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomResponse> getRoomList() {
-        List<Room> rooms = roomRepository.findAll();
+    public List<RoomResponse> getRoomList(RoomType roomType) {
+        List<Room> rooms;
+        if(RoomType.ALL.equals(roomType) || roomType == null) {
+             rooms = roomRepository.findAll();
+        } else {
+            rooms = roomRepository.findAllByRoomType(roomType);
+        }
         return rooms.stream().map(t -> RoomResponse.fromEntity(t)).collect(Collectors.toList());
     }
 
