@@ -28,6 +28,12 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder encoder;
 
+
+    public MemberResponse loadUserByMemberName(String memberName) {
+        return memberRepository.findByMemberName(memberName).map(MemberResponse::fromEntity).orElseThrow(() ->
+           new HomeException(ErrorCode.USER_NOT_FOUND));
+    }
+
     @Override
     @Transactional
     public MemberResponse signup(MemberRequest request) {

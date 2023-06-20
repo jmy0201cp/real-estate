@@ -6,6 +6,7 @@ import com.realstate.home.dto.response.MemberLoginResponse;
 import com.realstate.home.dto.response.MemberResponse;
 
 public interface MemberService {
+    MemberResponse loadUserByMemberName(String memberName);
     MemberResponse signup(MemberRequest request);
 
     MemberLoginResponse login(MemberLoginRequest request);
