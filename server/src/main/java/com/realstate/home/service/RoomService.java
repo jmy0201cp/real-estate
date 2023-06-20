@@ -20,4 +20,11 @@ public interface RoomService {
     RoomResponse update(Long roomId, RoomRequest request);
 
     void delete(Long roomId);
+
+    //위시리스트 추가
+    void addWishList(String memberName, Long roomId);
+
+    boolean isExistInWishList(String memberName, Long roomId);
+
+    List<RoomResponse> getAllWishListByMemberId(String memberName);
 }

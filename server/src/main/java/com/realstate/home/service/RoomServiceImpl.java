@@ -35,6 +35,7 @@ public class RoomServiceImpl implements RoomService {
     private final MemberRepository memberRepository;
     private final RoomRepository roomRepository;
     private final FileRepository fileRepository;
+    private final WishRepository wishRepository;
 
     @Value("${spring.servlet.multipart.location}")
     private String uploadPath;
@@ -109,6 +110,58 @@ public class RoomServiceImpl implements RoomService {
     public void delete(Long roomId) {
         Room room = getRoomEntityOrExceptionById(roomId);
         roomRepository.delete(room);
+    }
+
+    @Override
+    public void addWishList(String memberName, Long roomId) {
+        Member member = memberRepository.findByMemberName(memberName).orElseThrow(() -> {
+                    throw new HomeException(ErrorCode.USER_NOT_FOUND);
+        });
+
+        Room room = getRoomEntityOrExceptionById(roomId);
+
+        Wishlist wishlist = wishRepository.findByMemberAndRoom(member, room);
+
+        if(wishlist != null) {
+            wishlist.setIsDeleted(true);
+            wishRepository.delete(wishlist);
+        } else {
+            wishRepository.save(Wishlist.of(member, room));
+        }
+    }
+
+    @Override
+    public boolean isExistInWishList(String memberName, Long roomId) {
+        Member member = memberRepository.findByMemberName(memberName).orElseThrow(() -> {
+            throw new HomeException(ErrorCode.USER_NOT_FOUND);
+        });
+
+        Room room = getRoomEntityOrExceptionById(roomId);
+
+        Wishlist wishlist = wishRepository.findByMemberAndRoom(member, room);
+        return wishlist != null;
+    }
+
+    @Override
+    public List<RoomResponse> getAllWishListByMemberId(String memberName) {
+        //유저네임으로 있는지 확인
+        Member member = memberRepository.findByMemberName(memberName).orElseThrow(() -> {
+            throw new HomeException(ErrorCode.USER_NOT_FOUND);
+        });
+
+        //불러온 유저 아이디로 방아이디 확인
+        List<Wishlist> wishlist = wishRepository.findAllByMember(member).orElseThrow(() -> {
+            throw new HomeException(ErrorCode.DO_NOT_FOUND);
+        });
+
+        //방 아이디로 데이터 불러오기
+        List<Room> roomList = wishlist.stream().map((it) ->
+                roomRepository.findById(it.getRoom().getRoomId()).orElseThrow(() -> {
+                    throw new HomeException(ErrorCode.DO_NOT_FOUND);
+                })).collect(Collectors.toList());
+
+        List<RoomResponse> rooms = roomList.stream().map(t -> RoomResponse.fromEntity(t)).collect(Collectors.toList());
+        return rooms;
     }
 
     private Room getRoomEntityOrExceptionById(Long roomId) {
