@@ -5,12 +5,14 @@ import com.realstate.home.dto.request.MemberLoginRequest;
 import com.realstate.home.dto.request.MemberRequest;
 import com.realstate.home.dto.response.MemberLoginResponse;
 import com.realstate.home.dto.response.MemberResponse;
+import com.realstate.home.dto.response.RoomResponse;
 import com.realstate.home.service.MemberService;
+import com.realstate.home.service.RoomService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     private final MemberService memberService;
+    private final RoomService roomService;
+
     @PostMapping("/signup")
     public Response<MemberResponse> join(@RequestBody MemberRequest request) {
         return Response.success(memberService.signup(request));
@@ -27,4 +31,10 @@ public class MemberController {
     public Response<MemberLoginResponse> login(@RequestBody MemberLoginRequest request) {
         return Response.success(memberService.login(request));
     }
+
+    @GetMapping("/wish")
+    public Response<List<RoomResponse>> getAllWishListByMemberId(Authentication authentication) {
+        return Response.success(roomService.getAllWishListByMemberId(authentication.getName()));
+    }
+
 }
