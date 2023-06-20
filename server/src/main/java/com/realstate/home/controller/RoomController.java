@@ -52,4 +52,16 @@ public class RoomController {
         return Response.success();
     }
 
+    //위시리스트에 넣기
+    @PostMapping("/{roomId}/wishlist")
+    public Response<Void> addWishlist(@PathVariable Long roomId, Authentication authentication) {
+        roomService.addWishList(authentication.getName(), roomId);
+        return Response.success();
+    }
+
+    @GetMapping("/{roomId}/wishlist")
+    public Response<Boolean> isExistRoomInWishList(@PathVariable Long roomId, Authentication authentication) {
+        return Response.success(roomService.isExistInWishList(authentication.getName(), roomId));
+    }
+
 }
