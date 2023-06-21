@@ -1,10 +1,13 @@
 package com.realstate.home.controller;
 
+import com.realstate.home.domain.RoomType;
 import com.realstate.home.dto.Response;
 import com.realstate.home.dto.request.RoomRequest;
 import com.realstate.home.dto.response.RoomResponse;
 import com.realstate.home.service.RoomService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,8 +37,8 @@ public class RoomController {
     }
 
     @GetMapping
-    public Response<List<RoomResponse>> getRoomList() {
-        return Response.success(roomService.getRoomList());
+    public Response<List<RoomResponse>> getRoomList(@RequestParam RoomType roomType) {
+        return Response.success(roomService.getRoomList(roomType));
     }
 
     @PutMapping("/{roomId}")
@@ -47,6 +50,18 @@ public class RoomController {
     public Response<Void> delete(@PathVariable Long roomId) {
         roomService.delete(roomId);
         return Response.success();
+    }
+
+    //위시리스트에 넣기
+    @PostMapping("/{roomId}/wishlist")
+    public Response<Void> addWishlist(@PathVariable Long roomId, Authentication authentication) {
+        roomService.addWishList(authentication.getName(), roomId);
+        return Response.success();
+    }
+
+    @GetMapping("/{roomId}/wishlist")
+    public Response<Boolean> isExistRoomInWishList(@PathVariable Long roomId, Authentication authentication) {
+        return Response.success(roomService.isExistInWishList(authentication.getName(), roomId));
     }
 
 }

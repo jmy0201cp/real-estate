@@ -11,6 +11,25 @@ import java.util.Date;
 
 public class JwtTokenUtils {
 
+
+
+    //토근 생성할때 넣어준 memberName 가져오기
+    public static String getMemberNameByToken(String token, String key) {
+        return extractClaims(token, key).get("memberName", String.class);
+    }
+
+    //기한 만료됐는지 확인
+    public static boolean isExpired(String token, String key) {
+        Date expiredDate = extractClaims(token, key).getExpiration();
+        return expiredDate.before(new Date());
+    }
+
+    //토큰 생성했을때, 넣었던 데이터 추출하기(회원이름)
+    public static Claims extractClaims(String token, String key) {
+       return Jwts.parserBuilder().setSigningKey(getKey(key))
+                .build().parseClaimsJws(token).getBody();
+    }
+
     public static String createJwtToken(String memberName, String key, long expiredTimeMs) {
         Claims claims = Jwts.claims();
 

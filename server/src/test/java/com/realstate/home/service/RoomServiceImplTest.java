@@ -1,6 +1,7 @@
 package com.realstate.home.service;
 
 import com.realstate.home.domain.ContractType;
+import com.realstate.home.domain.RoomType;
 import com.realstate.home.domain.entity.Room;
 import com.realstate.home.dto.request.RoomRequest;
 import com.realstate.home.dto.response.RoomResponse;
@@ -102,11 +103,13 @@ class RoomServiceImplTest {
     void Should_ResponseRoomEntities_When_RequestGetRoomAllList() {
         Long firstId = 2L;
         Long secondId = 3L;
+        RoomType roomType = RoomType.STUDIO;
 
         //given
         Room entity1 = Room.builder()
                 .roomId(2L)
                 .url("dkfhse/gdsel.g")
+                .roomType(roomType)
                 .contractType(ContractType.JEONSE)
                 .price(BigDecimal.valueOf(125000000))
                 .address("서울시 강서구")
@@ -121,6 +124,7 @@ class RoomServiceImplTest {
         Room entity2 = Room.builder()
                 .roomId(3L)
                 .url("advertising.jpg")
+                .roomType(RoomType.VILLA)
                 .contractType(ContractType.MONTHLY)
                 .price(BigDecimal.valueOf(600000))
                 .address("인천시 남동구")
@@ -132,13 +136,14 @@ class RoomServiceImplTest {
                 .details("월세 조정 가능합니다. ")
                 .build();
 
-        when(roomRepository.findAll()).thenReturn(Arrays.asList(entity1, entity2));
+//        when(roomRepository.findAll()).thenReturn(Arrays.asList(entity1, entity2));
+        when(roomRepository.findAllByRoomType(RoomType.VILLA)).thenReturn(Arrays.asList(entity2));
 
         //when
-        List<RoomResponse> actualList = roomService.getRoomList();
+        List<RoomResponse> actualList = roomService.getRoomList(RoomType.VILLA);
 
         //then
-        assertThat(actualList.stream().map(t -> t.getRoomId())).contains(firstId, secondId);
+        assertThat(actualList.stream().map(t -> t.getRoomId())).contains(secondId);
 //        Assertions.assertDoesNotThrow(()->roomService.getRoomList());
     }
 
