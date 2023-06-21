@@ -1,0 +1,98 @@
+[
+  {
+    "id": "1",
+    "url": "/image/room1.jpg",
+    "address": "서울시 강서구 공항동",
+    "contractType": "JEONSE",
+    "price": "135000000",
+    "managementFee": 120000,
+    "floor": 8,
+    "roomCount": 1,
+    "elevatorYn": true,
+    "details": "전세 대출 가능해요."
+  },
+  {
+    "id": "2",
+    "url": "/image/room3.jpg",
+    "address": "서울시 강서구 화곡동",
+    "contractType": "MONTHLY",
+    "price": "135000000",
+    "managementFee": 120000,
+    "floor": 8,
+    "roomCount": 1,
+    "elevatorYn": true,
+    "details": "전세 대출 가능해요."
+  },
+  {
+    "id": "3",
+    "url": "/image/room6.jpg",
+    "address": "서울시 강서구 공항동",
+    "contractType": "RENTAL",
+    "price": "135000000",
+    "managementFee": 120000,
+    "floor": 8,
+    "roomCount": 1,
+    "elevatorYn": true,
+    "details": "전세 대출 가능해요."
+  },
+  {
+    "id": "4",
+    "url": "/image/room8.jpg",
+    "address": "서울시 강서구 공항동",
+    "contractType": "PURCHASE",
+    "price": "135000000",
+    "managementFee": 120000,
+    "floor": 8,
+    "roomCount": 1,
+    "elevatorYn": true,
+    "details": "전세 대출 가능해요."
+  },
+  {
+    "id": "5",
+    "url": "/image/room11.jpg",
+    "address": "서울시 강서구 공항동",
+    "contractType": "JEONSE",
+    "price": "135000000",
+    "managementFee": 120000,
+    "floor": 8,
+    "roomCount": 1,
+    "elevatorYn": true,
+    "details": "전세 대출 가능해요."
+  },
+  {
+    "id": "6",
+    "url": "/image/room14.jpg",
+    "address": "서울시 강서구 공항동",
+    "contractType": "JEONSE",
+    "price": "135000000",
+    "managementFee": 120000,
+    "floor": 8,
+    "roomCount": 1,
+    "elevatorYn": true,
+    "details": "전세 대출 가능해요."
+  },
+  {
+    "id": "7",
+    "url": "/image/room10.jpg",
+    "address": "서울시 강서구 공항동",
+    "contractType": "JEONSE",
+    "price": "135000000",
+    "managementFee": 120000,
+    "floor": 8,
+    "roomCount": 1,
+    "elevatorYn": true,
+    "details": "전세 대출 가능해요."
+  },
+  {
+    "id": "8",
+    "url": "/image/room9.jpg",
+    "address": "인천시 남동구 논현동",
+    "contractType": "MONTHLY",
+    "price": "450000",
+    "managementFee": 70000,
+    "floor": 4,
+    "roomCount": 2,
+    "elevatorYn": true,
+    "details": "전세 대출 가능해요."
+  }
+]
