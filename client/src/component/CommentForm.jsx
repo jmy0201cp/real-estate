@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { AiOutlineCompass } from "react-icons/ai";
 import { useParams } from "react-router-dom";
 import { BsFillHouseHeartFill } from "react-icons/bs";
+import { LoginTokenContext } from "../context/LoginTokenContext";
+import httpFetch from "../network/http";
 
 export default function CommentForm() {
-  const [token, setToken] = useState(localStorage.getItem("token"));
+  const { token } = useContext(LoginTokenContext);
   const [content, setContent] = useState("");
   const { roomId } = useParams();
 
@@ -23,10 +25,9 @@ export default function CommentForm() {
       return;
     }
 
-    await fetch(`/rooms/${roomId}/comment`, {
+    await httpFetch(`/rooms/${roomId}/comment`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ content }),

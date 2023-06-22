@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from "react";
 import Room from "../component/Room";
 import { useLocation } from "react-router-dom";
+import httpFetch from "../network/http";
 
 export default function RoomContainer() {
   const [rooms, setRooms] = useState([]);
   const { state } = useLocation();
 
   useEffect(() => {
-    fetch(`/rooms?roomType=${state || "all"}`)
-      .then((res) => res.json())
-      .then((room) => setRooms(room.data));
+    async function fetchData() {
+      const data = await httpFetch(`/rooms?roomType=${state || "all"}`, {
+        method: "GET",
+      });
+      setRooms(data);
+    }
+    fetchData();
   }, [state]);
 
   return (

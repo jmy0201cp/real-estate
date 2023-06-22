@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import moment from "moment";
+import { LoginTokenContext } from "../context/LoginTokenContext";
+import httpFetch from "../network/http";
 
 export default function Comment({ comment }) {
-  const [token, setToken] = useState(localStorage.getItem("token"));
+  const { token } = useContext(LoginTokenContext);
   const { commentId, memberName, content, createdAt } = comment;
   const [text, setText] = useState(content);
 
@@ -15,10 +17,9 @@ export default function Comment({ comment }) {
     if (!window.confirm("수정하시겠습니까?")) {
       return;
     }
-    await fetch(`/rooms/comment/${commentId}`, {
+    await httpFetch(`/rooms/comment/${commentId}`, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ content: text }),
@@ -30,10 +31,9 @@ export default function Comment({ comment }) {
     if (!window.confirm("삭제하시겠습니까?")) {
       return;
     }
-    await fetch(`/rooms/comment/${commentId}`, {
+    await httpFetch(`/rooms/comment/${commentId}`, {
       method: "DELETE",
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     });

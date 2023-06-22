@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import httpFetch from "../network/http";
 
 let user = {
   memberName: "",
@@ -11,7 +12,6 @@ export default function Login() {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    console.log(userLogin);
     e.preventDefault();
 
     if (userLogin.memberName === "" || userLogin.password === "") {
@@ -19,22 +19,12 @@ export default function Login() {
       return;
     }
 
-    const response = await fetch(`/members/login`, {
+    const response = await httpFetch(`/members/login`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify(userLogin),
     });
 
-    const result = await response.json();
-
-    if (result.status !== "success") {
-      alert(result.status);
-      return;
-    }
-
-    localStorage.setItem("token", result.data.token);
+    localStorage.setItem("token", response.token);
     navigate("/");
 
     setUserLogin(user);
