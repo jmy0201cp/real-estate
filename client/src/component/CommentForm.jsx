@@ -14,6 +14,15 @@ export default function CommentForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (content === null || content === "") {
+      alert("내용을 입력해주세요.");
+      return;
+    }
+
+    if (!window.confirm("댓글을 등록하시겠습니까?")) {
+      return;
+    }
+
     await fetch(`/rooms/${roomId}/comment`, {
       method: "POST",
       headers: {
