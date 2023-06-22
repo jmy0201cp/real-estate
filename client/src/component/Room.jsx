@@ -13,7 +13,7 @@ export default function Room({ room }) {
 
   return (
     <li
-      className="rounded-lg shadow-md overflow-hidden cursor-pointer max-h-[365px]"
+      className="rounded-lg shadow-md overflow-hidden cursor-pointer h-[365px]"
       onClick={() => navigate(`/rooms/${room.roomId}`, { state: room })}
     >
       <img src={room.url} alt="" className="w-full h-80" />
