@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import RequestModal from "../component/RequestModal";
+import { useLocation, useParams } from "react-router-dom";
 import { BsBookmarkHeartFill, BsBookmarkHeart } from "react-icons/bs";
+import CommentContainer from "../component/CommentContainer";
 
 const types = {
   JEONSE: "전세",
@@ -11,10 +11,8 @@ const types = {
 };
 
 export default function RoomDetail() {
-  const [askFlag, setAskFlag] = useState(false);
   const [heart, setHeart] = useState(false);
   const [token, setToken] = useState(localStorage.getItem("token"));
-  const navigate = useNavigate();
   const { roomId } = useParams();
   const {
     state: {
@@ -45,10 +43,6 @@ export default function RoomDetail() {
       .then((res) => setHeart(res.data));
   }, []);
 
-  const handleModal = () => {
-    setAskFlag((prev) => !prev);
-  };
-
   const handleAdd = async (e) => {
     if (!heart && token == null) {
       alert("로그인 후 가능합니다.");
@@ -67,55 +61,54 @@ export default function RoomDetail() {
   };
 
   return (
-    <div className="flex p-2 overflow-auto">
-      <div>
-        <img src={url} alt="room" className="w-full max-h-[500px]" />
-        <div className="flex items-end pt-2 pl-2">
-          {heart && (
-            <BsBookmarkHeartFill
-              onClick={handleAdd}
-              className="text-[25px] mt-2 cursor-pointer transition-all hover:scale-105"
-            />
-          )}
-          {!heart && (
-            <BsBookmarkHeart
-              onClick={handleAdd}
-              className="text-[25px] mt-2 cursor-pointer transition-all hover:scale-105"
-            />
-          )}
-          <span className="text-xs font-semibold ml-1.5">Save Wish-list</span>
+    <div className="overflow-auto h-5/6 pb-3">
+      <div className="flex p-2">
+        <div>
+          <img src={url} alt="room" className="w-full max-h-[500px]" />
+          <div className="flex items-end pt-2 pl-2">
+            {heart && (
+              <BsBookmarkHeartFill
+                onClick={handleAdd}
+                className="text-[25px] mt-2 cursor-pointer transition-all hover:scale-105"
+              />
+            )}
+            {!heart && (
+              <BsBookmarkHeart
+                onClick={handleAdd}
+                className="text-[25px] mt-2 cursor-pointer transition-all hover:scale-105"
+              />
+            )}
+            <span className="text-xs font-semibold ml-1.5">Save Wish-list</span>
+          </div>
+        </div>
+        <div className="px-3 py-1">
+          <div className="flex">
+            <ul className="p-[10px] font-black">
+              <li className="pb-3">주소</li>
+              <li className="pb-3">계약유형</li>
+              <li className="pb-3">가격</li>
+              <li className="pb-3">주소</li>
+              <li className="pb-3">관리비</li>
+              <li className="pb-3">층수</li>
+              <li className="pb-3">방개수</li>
+              <li className="pb-3">엘레베이터</li>
+              <li>상세정보</li>
+            </ul>
+            <ul className="text-center p-[10px]">
+              <li className="pb-3">{address}</li>
+              <li className="pb-3">{types[contractType]}</li>
+              <li className="pb-3">￦{price}</li>
+              <li className="pb-3">{address}</li>
+              <li className="pb-3">{managementFee}</li>
+              <li className="pb-3">{floor}</li>
+              <li className="pb-3">{roomCount}</li>
+              <li className="pb-3">{elevatorYn}</li>
+              <li>{details}</li>
+            </ul>
+          </div>
         </div>
       </div>
-      <div className="px-3 py-1">
-        <div className="flex">
-          <ul className="p-[10px] font-black">
-            <li className="pb-3">주소</li>
-            <li className="pb-3">계약유형</li>
-            <li className="pb-3">가격</li>
-            <li className="pb-3">주소</li>
-            <li className="pb-3">관리비</li>
-            <li className="pb-3">층수</li>
-            <li className="pb-3">방개수</li>
-            <li className="pb-3">엘레베이터</li>
-            <li>상세정보</li>
-          </ul>
-          <ul className="text-center p-[10px]">
-            <li className="pb-3">{address}</li>
-            <li className="pb-3">{types[contractType]}</li>
-            <li className="pb-3">￦{price}</li>
-            <li className="pb-3">{address}</li>
-            <li className="pb-3">{managementFee}</li>
-            <li className="pb-3">{floor}</li>
-            <li className="pb-3">{roomCount}</li>
-            <li className="pb-3">{elevatorYn}</li>
-            <li>{details}</li>
-          </ul>
-        </div>
-        <div className="flex">
-          <button onClick={handleModal}>문의하기</button>
-          {!askFlag || <RequestModal />}
-        </div>
-      </div>
+      <CommentContainer />
     </div>
   );
 }
