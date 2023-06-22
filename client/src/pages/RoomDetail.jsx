@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { BsBookmarkHeartFill, BsBookmarkHeart } from "react-icons/bs";
 import CommentContainer from "../component/CommentContainer";
+import RegionMap from "../component/RegionMap";
 
 const types = {
   JEONSE: "전세",
@@ -18,6 +19,7 @@ export default function RoomDetail() {
     state: {
       url,
       address,
+      addressDetail,
       contractType,
       price,
       managementFee,
@@ -98,7 +100,9 @@ export default function RoomDetail() {
               <li className="pb-3">{address}</li>
               <li className="pb-3">{types[contractType]}</li>
               <li className="pb-3">￦{price}</li>
-              <li className="pb-3">{address}</li>
+              <li className="pb-3">
+                {address} {addressDetail}
+              </li>
               <li className="pb-3">{managementFee}</li>
               <li className="pb-3">{floor}</li>
               <li className="pb-3">{roomCount}</li>
@@ -108,7 +112,10 @@ export default function RoomDetail() {
           </div>
         </div>
       </div>
-      <CommentContainer />
+      <div className="flex">
+        <RegionMap address={addressDetail} />
+        <CommentContainer />
+      </div>
     </div>
   );
 }
