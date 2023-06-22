@@ -25,6 +25,17 @@ export default function RoomDetail() {
     },
   } = useLocation();
 
+  const infoValues = [
+    { 주소: `${address} ${addressDetail}` },
+    { 계약유형: converterType(contractType) },
+    { 가격: `${price.toLocaleString()} 원` },
+    { 관리비: `${managementFee.toLocaleString()} 원` },
+    { 층수: `${floor} 층` },
+    { 방개수: `${roomCount} 개` },
+    { 엘레베이터: elevatorYn ? "있음" : "없음" },
+    { 상세정보: details },
+  ];
+
   useEffect(() => {
     if (!token) {
       return;
@@ -59,7 +70,7 @@ export default function RoomDetail() {
   return (
     <div className="overflow-auto h-5/6 pb-3">
       <div className="flex p-2">
-        <div>
+        <div className="w-full max-w-[550px]">
           <img src={url} alt="room" className="w-full max-h-[500px]" />
           <div className="flex items-end pt-2 pl-2">
             {heart && (
@@ -77,39 +88,43 @@ export default function RoomDetail() {
             <span className="text-xs font-semibold ml-1.5">Save Wish-list</span>
           </div>
         </div>
-        <div className="px-3 py-1">
-          <div className="flex">
-            <ul className="p-[10px] font-black">
-              <li className="pb-3">주소</li>
-              <li className="pb-3">계약유형</li>
-              <li className="pb-3">가격</li>
-              <li className="pb-3">주소</li>
-              <li className="pb-3">관리비</li>
-              <li className="pb-3">층수</li>
-              <li className="pb-3">방개수</li>
-              <li className="pb-3">엘레베이터</li>
-              <li>상세정보</li>
-            </ul>
-            <ul className="text-center p-[10px]">
-              <li className="pb-3">{address}</li>
-              <li className="pb-3">{types[contractType]}</li>
-              <li className="pb-3">￦{price}</li>
-              <li className="pb-3">
-                {address} {addressDetail}
-              </li>
-              <li className="pb-3">{managementFee}</li>
-              <li className="pb-3">{floor}</li>
-              <li className="pb-3">{roomCount}</li>
-              <li className="pb-3">{elevatorYn}</li>
-              <li>{details}</li>
-            </ul>
-          </div>
+        {/* 상세정보 */}
+        <div className="px-3 py-1 flex w-full">
+          <ul className="p-[10px] pt-0 font-black text-[12px] w-full">
+            {infoValues.map((info, index) => {
+              const key = Object.keys(infoValues[index]).join();
+              return (
+                <li className="p-2 flex border-b " key={index}>
+                  <span className="w-[100px] max-w-[100px] pl-2">{key}</span>
+                  <p className="text-center font-thin w-full pr-3">
+                    {info[key]}
+                  </p>
+                </li>
+              );
+            })}
+          </ul>
         </div>
       </div>
       <div className="flex">
-        <RegionMap address={addressDetail} />
+        <div className="border border-black w-3/4 m-2 mr-3">
+          네이버 지도 자리
+        </div>
+        {/* <RegionMap address={addressDetail} /> */}
         <CommentContainer />
       </div>
     </div>
   );
+}
+
+function converterType(type) {
+  switch (type) {
+    case "MONTHLY":
+      return "월세";
+    case "JEONSE":
+      return "전세";
+    case "SHORT":
+      return "단기임대";
+    default:
+      return "매매";
+  }
 }
