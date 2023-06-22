@@ -45,31 +45,44 @@ export default function Login() {
   };
 
   return (
-    <>
-      <h1>로그인 페이지</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col w-96">
-        <input
-          type="text"
-          name="memberName"
-          id="memberName"
-          value={userLogin.memberName}
-          onChange={handleChange}
-          placeholder="아이디"
-          className="border border-black"
-        />
-        <input
-          type="password"
-          name="password"
-          id="password"
-          value={userLogin.password}
-          onChange={handleChange}
-          placeholder="비밀번호"
-          className="border border-black"
-        />
-        <button>로그인</button>
-      </form>
-      <Link to="/">로그인하지 않고 둘러보기</Link>
-      <Link to="/signup">회원가입</Link>
-    </>
+    <div className="bg-[#e0dfe4] flex flex-col items-center h-screen">
+      <img src="/image/logo.png" alt="" className="w-1/3" />
+      <div className="w-96">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col z-10 mt-[-150px]"
+        >
+          <input
+            type="text"
+            name="memberName"
+            id="memberName"
+            value={userLogin.memberName}
+            onChange={handleChange}
+            placeholder="아이디"
+            className="p-2"
+          />
+          <input
+            type="password"
+            name="password"
+            id="password"
+            value={userLogin.password}
+            onChange={handleChange}
+            placeholder="비밀번호"
+            className="p-2 mt-1.5"
+          />
+          <button className="mt-2 p-1 border bg-gray-400 text-white hover:font-semibold">
+            Login
+          </button>
+        </form>
+        <div className="flex justify-between py-2 text-xs w-full">
+          <Link to="/" className="pl-1.5 hover:font-semibold">
+            Just look around without logging in
+          </Link>
+          <Link to="/signup" className="pr-1.5 hover:font-semibold">
+            Join
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 }
