@@ -2,10 +2,12 @@ package com.realstate.home.controller;
 
 import com.realstate.home.domain.RoomType;
 import com.realstate.home.dto.Response;
+import com.realstate.home.dto.request.CommentRequest;
 import com.realstate.home.dto.request.RoomRequest;
+import com.realstate.home.dto.response.CommentResponse;
 import com.realstate.home.dto.response.RoomResponse;
+import com.realstate.home.service.CommentService;
 import com.realstate.home.service.RoomService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,7 @@ import java.util.List;
 public class RoomController {
 
     private final RoomService roomService;
+    private final CommentService commentService;
 
     @PostMapping
     public Response<RoomResponse> create(@RequestBody RoomRequest request) {
@@ -64,4 +67,26 @@ public class RoomController {
         return Response.success(roomService.isExistInWishList(authentication.getName(), roomId));
     }
 
+    //댓글
+    @PostMapping("/{roomId}/comment")
+    public Response<Void> createComment(@PathVariable Long roomId, Authentication authentication, @RequestBody CommentRequest request) {
+        commentService.create(roomId, authentication.getName(), request);
+        return Response.success();
+    }
+
+    @GetMapping("/{roomId}/comment")
+    public Response<List<CommentResponse>> getCommentList(@PathVariable Long roomId) {
+       return Response.success(commentService.getCommentList(roomId));
+    }
+
+    @PutMapping("/comment/{commentId}")
+    public Response<CommentResponse> updateComment(@PathVariable Long commentId, Authentication authentication, @RequestBody CommentRequest request) {
+        return Response.success(commentService.update(authentication.getName(), commentId, request));
+    }
+
+    @DeleteMapping("/comment/{commentId}")
+    public Response<Void> deleteComment(@PathVariable Long commentId, Authentication authentication) {
+        commentService.delete(authentication.getName(), commentId);
+        return Response.success();
+    }
 }
