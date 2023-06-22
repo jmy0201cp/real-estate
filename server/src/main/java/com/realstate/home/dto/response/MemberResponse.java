@@ -1,5 +1,7 @@
 package com.realstate.home.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.realstate.home.domain.entity.Member;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,6 +17,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MemberResponse implements UserDetails {
     private Long memberId;
     private String memberName;
@@ -45,31 +48,37 @@ public class MemberResponse implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(this.getMemberId().toString()));
     }
 
     @Override
+    @JsonIgnore
     public String getUsername() {
         return this.memberName;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return this.isDeleted = false;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return this.isDeleted = false;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return this.isDeleted = false;
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return this.isDeleted = false;
     }
