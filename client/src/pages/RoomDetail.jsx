@@ -1,19 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { BsBookmarkHeartFill, BsBookmarkHeart } from "react-icons/bs";
 import CommentContainer from "../component/CommentContainer";
 import RegionMap from "../component/RegionMap";
-
-const types = {
-  JEONSE: "전세",
-  MONTHLY: "월세",
-  RENTAL: "단기임대",
-  PURCHASE: "매매",
-};
+import { LoginTokenContext } from "../context/LoginTokenContext";
+import httpFetch from "../network/http.js";
 
 export default function RoomDetail() {
   const [heart, setHeart] = useState(false);
-  const [token, setToken] = useState(localStorage.getItem("token"));
+  const { token } = useContext(LoginTokenContext);
   const { roomId } = useParams();
   const {
     state: {
@@ -34,15 +29,16 @@ export default function RoomDetail() {
     if (!token) {
       return;
     }
-    fetch(`/rooms/${roomId}/wishlist`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((data) => data.json())
-      .then((res) => setHeart(res.data));
+    async function fetchData() {
+      const data = await httpFetch(`/rooms/${roomId}/wishlist`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setHeart(data);
+    }
+    fetchData();
   }, []);
 
   const handleAdd = async (e) => {
@@ -51,14 +47,12 @@ export default function RoomDetail() {
       return;
     }
 
-    await fetch(`/rooms/${roomId}/wishlist`, {
+    await httpFetch(`/rooms/${roomId}/wishlist`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     });
-
     setHeart((prev) => !prev);
   };
 

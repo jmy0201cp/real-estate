@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { LoginTokenContext } from "../context/LoginTokenContext";
 
 const roomTypes = [
   { all: "All" },
@@ -11,7 +12,7 @@ const roomTypes = [
 const wishLocation = "/members/wish";
 
 export default function Header() {
-  const [token, setToken] = useState(localStorage.getItem("token"));
+  const { token } = useContext(LoginTokenContext);
   const [select, setSelect] = useState("all");
   const navigate = useNavigate();
   const { pathname } = useLocation();

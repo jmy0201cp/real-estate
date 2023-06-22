@@ -1,23 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AiTwotoneEdit } from "react-icons/ai";
 import CommentForm from "./CommentForm";
 import Comment from "./Comment";
 import { useParams } from "react-router-dom";
+import { LoginTokenContext } from "../context/LoginTokenContext";
+import httpFetch from "../network/http";
 
 export default function InquiryComment() {
   const { roomId } = useParams();
   const [comments, setComments] = useState([]);
-  const [token, setToken] = useState(localStorage.getItem("token"));
+  const { token } = useContext(LoginTokenContext);
 
   useEffect(() => {
-    fetch(`/rooms/${roomId}/comment`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((data) => data.json())
-      .then((res) => setComments(res.data));
+    async function fetchData() {
+      const data = await httpFetch(`/rooms/${roomId}/comment`, {
+        method: "GET",
+      });
+      setComments(data);
+    }
+    fetchData();
   }, []);
 
   return (

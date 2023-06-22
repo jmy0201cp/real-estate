@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Room from "../component/Room";
 import { useNavigate } from "react-router-dom";
+import { LoginTokenContext } from "../context/LoginTokenContext";
+import httpFetch from "../network/http";
 
 export default function WishBasket() {
-  const [token, setToken] = useState(localStorage.getItem("token"));
+  const { token } = useContext(LoginTokenContext);
   const [list, setList] = useState([]);
   const navigate = useNavigate();
 
@@ -12,16 +14,16 @@ export default function WishBasket() {
       navigate("/");
       return;
     }
-
-    fetch(`/members/wish`, {
-      method: "GET",
-      headers: {
-        "Context-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((data) => data.json())
-      .then((res) => setList(res.data));
+    async function fetchData() {
+      const data = await httpFetch(`/members/wish`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setList(data);
+    }
+    fetchData();
   }, []);
 
   return (
