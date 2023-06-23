@@ -32,7 +32,7 @@ public class Member extends BaseEntity {
     @Column(columnDefinition = "varchar(255) NOT NULL COMMENT '회원 이름'")
     private String memberName;
 
-    @Column(columnDefinition = "varchar(255) DEFAULT NULL COMMENT '비밀번호'")
+    @Column(columnDefinition = "varchar(255) NOT NULL COMMENT '비밀번호'")
     private String password;
 
     @Column(columnDefinition = "varchar(20) DEFAULT NULL COMMENT '핸드폰 번호'")
@@ -41,25 +41,20 @@ public class Member extends BaseEntity {
     @Column(columnDefinition = "varchar(50) DEFAULT NULL COMMENT '이메일'")
     private String email;
 
-    @Column(columnDefinition = "varchar(50) DEFAULT NULL COMMENT '주소'")
+    @Column(columnDefinition = "varchar(50) DEFAULT NULL COMMENT '원하는 지역(시, 구)'")
     private String address;
 
-    @Column(columnDefinition = "varchar(50) DEFAULT NULL COMMENT '상세주소'")
+    @Column(columnDefinition = "varchar(50) DEFAULT NULL COMMENT '원하는 지역(동/로)'")
     private String addressDetail;
-
-    @Column(columnDefinition = "varchar(5) DEFAULT NULL COMMENT '우편번호'")
-    private String zipCode;
-
 
     public static Member of(MemberRequest request) {
         Member member = new Member();
         member.setMemberName(request.getMemberName());
+        member.setPassword(request.getPassword());
         member.setPhoneNumber(request.getPhoneNumber());
         member.setEmail(request.getEmail());
-        member.setPassword(request.getPassword());
         member.setAddress(request.getAddress());
         member.setAddressDetail(request.getAddressDetail());
-        member.setZipCode(request.getZipCode());
         return member;
     }
 }

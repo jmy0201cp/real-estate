@@ -26,7 +26,6 @@ public class MemberResponse implements UserDetails {
     private String email;
     private String address;
     private String addressDetail;
-    private String zipCode;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Boolean isDeleted;
@@ -40,7 +39,6 @@ public class MemberResponse implements UserDetails {
                 member.getEmail(),
                 member.getAddress(),
                 member.getAddressDetail(),
-                member.getZipCode(),
                 member.getCreatedAt(),
                 member.getUpdatedAt(),
                 member.getIsDeleted()
