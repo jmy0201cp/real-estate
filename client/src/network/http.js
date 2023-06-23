@@ -1,7 +1,7 @@
 export default async function httpFetch(url, options) {
   const data = await fetch(`${url}`, {
     ...options,
-    header: {
+    headers: {
       "Content-Type": "application/json",
       ...options.headers,
     },
