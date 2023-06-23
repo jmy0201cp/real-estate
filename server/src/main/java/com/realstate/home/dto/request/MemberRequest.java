@@ -16,5 +16,4 @@ public class MemberRequest {
     private String email;
     private String address;
     private String addressDetail;
-    private String zipCode;
 }
