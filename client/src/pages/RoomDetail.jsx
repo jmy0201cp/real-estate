@@ -50,7 +50,7 @@ export default function RoomDetail() {
       setHeart(data);
     }
     fetchData();
-  }, []);
+  }, [roomId, token]);
 
   const handleAdd = async (e) => {
     if (!heart && token == null) {

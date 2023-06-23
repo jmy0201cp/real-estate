@@ -19,7 +19,7 @@ export default function InquiryComment() {
       setComments(data);
     }
     fetchData();
-  }, []);
+  }, [roomId]);
 
   return (
     <div className="rounded-lg shadow-md bg-white overflow-hidden cursor-pointer w-1/3 h-[365px] pt-2 border border-lightgray float-right p-2 mr-5 mb-5 items-center">
