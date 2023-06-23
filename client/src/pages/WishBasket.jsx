@@ -24,7 +24,7 @@ export default function WishBasket() {
       setList(data);
     }
     fetchData();
-  }, []);
+  }, [navigate, token]);
 
   return (
     <>
