@@ -123,7 +123,6 @@ public class RoomServiceImpl implements RoomService {
         Wishlist wishlist = wishRepository.findByMemberAndRoom(member, room);
 
         if(wishlist != null) {
-            wishlist.setIsDeleted(true);
             wishRepository.delete(wishlist);
         } else {
             wishRepository.save(Wishlist.of(member, room));
