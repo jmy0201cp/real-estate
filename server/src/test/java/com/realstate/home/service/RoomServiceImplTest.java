@@ -2,11 +2,14 @@ package com.realstate.home.service;
 
 import com.realstate.home.domain.ContractType;
 import com.realstate.home.domain.RoomType;
+import com.realstate.home.domain.entity.Member;
 import com.realstate.home.domain.entity.Room;
+import com.realstate.home.domain.entity.Wishlist;
 import com.realstate.home.dto.request.RoomRequest;
 import com.realstate.home.dto.response.RoomResponse;
-import com.realstate.home.repository.FileRepository;
+import com.realstate.home.repository.MemberRepository;
 import com.realstate.home.repository.RoomRepository;
+import com.realstate.home.repository.WishRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +19,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -35,6 +37,12 @@ class RoomServiceImplTest {
 
     @Mock
     private RoomRepository roomRepository;
+
+    @Mock
+    private MemberRepository memberRepository;
+
+    @Mock
+    private WishRepository wishRepository;
 
     @BeforeEach
     public void setUp() {
@@ -193,4 +201,120 @@ class RoomServiceImplTest {
         Assertions.assertDoesNotThrow(() -> roomService.delete(findId));
     }
 
+    //위시리스트 추가/삭제
+    @Test
+    void Should_AddWishList_When_RequestCreateInWishList() {
+        Long memberId = 1L;
+        Long roomId = 2L;
+        String memberName = "miyoung";
+        Long wishId = 2L;
+
+        Member member = Member.builder()
+                .memberId(1L)
+                .memberName("miyoung")
+                .build();
+
+        Room room = Room.builder()
+                .roomId(2L)
+                .build();
+
+        Wishlist entity = Wishlist.builder()
+                .wishId(2L)
+                .member(member)
+                .room(room)
+                .build();
+
+        //given
+        when(memberRepository.findByMemberName(memberName)).thenReturn(Optional.of(member));
+        when(roomRepository.findById(roomId)).thenReturn(Optional.of(room));
+        when(wishRepository.findByMemberAndRoom(member, room)).thenReturn(entity);
+
+        //when
+        roomService.addWishList(memberName, roomId);
+
+        //then
+        assertThat(entity.getWishId()).isSameAs(wishId);
+        assertThat(entity.getMember().getMemberId()).isSameAs(memberId);
+        assertThat(entity.getRoom().getRoomId()).isSameAs(roomId);
+    }
+
+    // 위시리스트에 이미 존재하는지
+    @Test
+    void IsExistAlready_InWishList_When_RequestCheckWishById() {
+        Long roomId = 2L;
+        String memberName = "miyoung";
+
+        Member member = Member.builder()
+                .memberId(1L)
+                .memberName("miyoung")
+                .build();
+
+        Room room = Room.builder()
+                .roomId(2L)
+                .build();
+
+        Wishlist entity = Wishlist.builder()
+                .wishId(2L)
+                .member(member)
+                .room(room)
+                .build();
+
+        //given
+        when(memberRepository.findByMemberName(memberName)).thenReturn(Optional.of(member));
+        when(roomRepository.findById(roomId)).thenReturn(Optional.of(room));
+        when(wishRepository.findByMemberAndRoom(member, room)).thenReturn(entity);
+
+        //when
+        Boolean actual = roomService.isExistInWishList(memberName, roomId);
+
+        //then
+        assertThat(actual).isSameAs(true);
+    }
+
+    // 위시리스트 모두 조회
+    @Test
+    void Should_ResponseWishAllList_When_RequestGetWishListByMemberName() {
+        Long roomId1 = 1L;
+        Long roomId2 = 2L;
+        String memberName = "miyoung";
+
+        Member member = Member.builder()
+                .memberId(1L)
+                .memberName("miyoung")
+                .build();
+
+        Room room1 = Room.builder()
+                .roomId(1L)
+                .build();
+
+        Room room2 = Room.builder()
+                .roomId(2L)
+                .build();
+
+        Wishlist entity1 = Wishlist.builder()
+                .wishId(2L)
+                .member(member)
+                .room(room1)
+                .build();
+
+        Wishlist entity2 = Wishlist.builder()
+                .wishId(3L)
+                .member(member)
+                .room(room2)
+                .build();
+
+        //given
+        when(memberRepository.findByMemberName(memberName)).thenReturn(Optional.of(member));
+        when(wishRepository.findAllByMember(member)).thenReturn(Optional.of(Arrays.asList(entity1, entity2)));
+        when(roomRepository.findById(roomId1)).thenReturn(Optional.of(room1));
+        when(roomRepository.findById(roomId2)).thenReturn(Optional.of(room2));
+
+        //when
+        List<RoomResponse> actualList = roomService.getAllWishListByMemberId(memberName);
+
+        //then
+        assertThat(actualList.size()).isSameAs(Arrays.asList(entity1, entity2).size());
+        assertThat(actualList.get(0).getRoomId()).isSameAs(roomId1);
+        assertThat(actualList.get(1).getRoomId()).isSameAs(roomId2);
+    }
 }
