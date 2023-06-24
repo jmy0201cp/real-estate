@@ -48,12 +48,18 @@ public class CommentServiceImpl implements CommentService{
     @Override
     public CommentResponse update(String memberName, Long commentId, CommentRequest request) {
         Member member = getMemberEntityOrException(memberName);
+        //댓글이 존재한지
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> {
             throw new HomeException(ErrorCode.DO_NOT_FOUND);
         });
 
         //지금 로그인 유저와 댓글 작성자가 동일한지
         if(member.getMemberId() != comment.getMember().getMemberId()) {
+            throw new HomeException(ErrorCode.DO_NOT_MATCH);
+        }
+
+        //수정된 부분 없어서 오류
+        if(comment.getContent() == request.getContent()) {
             throw new HomeException(ErrorCode.DO_NOT_MATCH);
         }
 
