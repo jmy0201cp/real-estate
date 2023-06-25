@@ -22,7 +22,7 @@ export default function InquiryComment() {
   }, [roomId]);
 
   return (
-    <div className="rounded-lg shadow-md bg-white overflow-hidden cursor-pointer w-1/3 h-[365px] pt-2 border border-lightgray float-right p-2 mr-5 mb-5 items-center">
+    <div className="rounded-lg shadow-md bg-white overflow-hidden w-1/3 h-[365px] pt-2 border border-lightgray float-right p-2 mr-5 mb-5 items-center">
       <div>
         <div className="flex items-center justify-center">
           <AiTwotoneEdit />
