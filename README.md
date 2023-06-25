@@ -22,6 +22,11 @@ Back-end
 - H2
 - Mysql
 
+*시연 영상
+
+![demo-project](https://github.com/jmy0201cp/real-estate/assets/78574972/6f7cde55-30d5-47e2-baa4-0f9f94961471)
+
+
 ** 구현한 기능 **
 1. 로그인 - jwt 토큰 생성 
 2. 회원가입
@@ -32,6 +37,7 @@ Back-end
 7. 문의 댓글 달기 - 로그인 후 가능
 8. 댓글 조회/등록/수정/삭제 기능
 9. 부동산 위치 표시하기(네이버 지도 API 사용)
+
 
 
 ** 미구현 기능 *
