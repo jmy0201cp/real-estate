@@ -28,8 +28,10 @@ public class CommentServiceImpl implements CommentService{
         private final RoomRepository roomRepository;
 
     @Override
-    public void create(Long roomId, String memberName, CommentRequest request) {
-        Member member = getMemberEntityOrException(memberName);
+    public void create(Long roomId, Long memberId, CommentRequest request) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> {
+            throw new HomeException(ErrorCode.USER_NOT_FOUND);
+        });
         Room room = getRoomEntityOrException(roomId);
 
         commentRepository.save(Comment.of(member, room, request.getContent()));
@@ -46,15 +48,14 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public CommentResponse update(String memberName, Long commentId, CommentRequest request) {
-        Member member = getMemberEntityOrException(memberName);
+    public CommentResponse update(Long memberId, Long commentId, CommentRequest request) {
         //댓글이 존재한지
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> {
             throw new HomeException(ErrorCode.DO_NOT_FOUND);
         });
 
         //지금 로그인 유저와 댓글 작성자가 동일한지
-        if(member.getMemberId() != comment.getMember().getMemberId()) {
+        if(memberId != comment.getMember().getMemberId()) {
             throw new HomeException(ErrorCode.DO_NOT_MATCH);
         }
 
@@ -70,17 +71,14 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public void delete(String memberName, Long commentId) {
-        //해당 유저가 존재하는지
-        Member member = getMemberEntityOrException(memberName);
-
+    public void delete(Long memberId, Long commentId) {
         //해당 댓글이 존재하는지
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> {
             throw new HomeException(ErrorCode.DO_NOT_FOUND);
         });
 
         //지금 로그인 유저와 댓글 작성자가 동일한지
-        if(member.getMemberId() != comment.getMember().getMemberId()) {
+        if(memberId != comment.getMember().getMemberId()) {
             throw new HomeException(ErrorCode.DO_NOT_MATCH);
         }
 
@@ -93,9 +91,4 @@ public class CommentServiceImpl implements CommentService{
         });
     }
 
-    private Member getMemberEntityOrException(String memberName) {
-        return memberRepository.findByMemberName(memberName).orElseThrow(() -> {
-            throw new HomeException(ErrorCode.USER_NOT_FOUND);
-        });
-    }
 }

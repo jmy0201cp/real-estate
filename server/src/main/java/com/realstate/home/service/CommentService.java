@@ -6,11 +6,12 @@ import com.realstate.home.dto.response.CommentResponse;
 import java.util.List;
 
 public interface CommentService {
-    void create(Long roomId, String memberName, CommentRequest request);
+    void create(Long roomId, Long memberId, CommentRequest request);
 
     List<CommentResponse> getCommentList(Long roomId);
 
-    CommentResponse update(String memberName, Long commentId, CommentRequest request);
+    CommentResponse update(Long memberId, Long commentId, CommentRequest request);
 
-    void delete(String memberName, Long commentId);
+    void delete(Long memberId, Long commentId);
+
 }
