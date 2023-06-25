@@ -12,14 +12,15 @@ export default function InquiryComment() {
   const { token } = useContext(LoginTokenContext);
 
   useEffect(() => {
-    async function fetchData() {
-      const data = await httpFetch(`/rooms/${roomId}/comment`, {
-        method: "GET",
-      });
-      setComments(data);
-    }
-    fetchData();
-  }, [roomId]);
+    handleGetAlarm();
+  }, []);
+
+  const handleGetAlarm = async () => {
+    const data = await httpFetch(`/rooms/${roomId}/comment`, {
+      method: "GET",
+    });
+    setComments(data);
+  };
 
   return (
     <div className="rounded-lg shadow-md bg-white overflow-hidden w-1/3 h-[365px] pt-2 border border-lightgray float-right p-2 mr-5 mb-5 items-center">
@@ -36,10 +37,14 @@ export default function InquiryComment() {
           </p>
         )}
       </div>
-      <CommentForm />
+      <CommentForm handleGetAlarm={handleGetAlarm} />
       <ul className="my-2 w-full max-h-[255px] overflow-auto">
         {comments.map((comment) => (
-          <Comment key={comment.commentId} comment={comment} />
+          <Comment
+            handleGetAlarm={handleGetAlarm}
+            key={comment.commentId}
+            comment={comment}
+          />
         ))}
       </ul>
     </div>
