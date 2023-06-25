@@ -32,6 +32,11 @@ public class MemberController {
         return Response.success(memberService.login(request));
     }
 
+    @GetMapping("/me")
+    public Response<String> me(Authentication authentication) {
+        return Response.success(authentication.getName());
+    }
+
     @GetMapping("/wish")
     public Response<List<RoomResponse>> getAllWishListByMemberId(Authentication authentication) {
         MemberResponse member = (MemberResponse) authentication.getPrincipal();
