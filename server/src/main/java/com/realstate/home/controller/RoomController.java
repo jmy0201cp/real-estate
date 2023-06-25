@@ -5,6 +5,7 @@ import com.realstate.home.dto.Response;
 import com.realstate.home.dto.request.CommentRequest;
 import com.realstate.home.dto.request.RoomRequest;
 import com.realstate.home.dto.response.CommentResponse;
+import com.realstate.home.dto.response.MemberResponse;
 import com.realstate.home.dto.response.RoomResponse;
 import com.realstate.home.service.CommentService;
 import com.realstate.home.service.RoomService;
@@ -58,19 +59,22 @@ public class RoomController {
     //위시리스트에 넣기
     @PostMapping("/{roomId}/wishlist")
     public Response<Void> addWishlist(@PathVariable Long roomId, Authentication authentication) {
-        roomService.addWishList(authentication.getName(), roomId);
+        MemberResponse member = (MemberResponse) authentication.getPrincipal();
+        roomService.addWishList(member.getMemberId(), roomId);
         return Response.success();
     }
 
     @GetMapping("/{roomId}/wishlist")
     public Response<Boolean> isExistRoomInWishList(@PathVariable Long roomId, Authentication authentication) {
-        return Response.success(roomService.isExistInWishList(authentication.getName(), roomId));
+        MemberResponse member = (MemberResponse) authentication.getPrincipal();
+        return Response.success(roomService.isExistInWishList(member.getMemberId(), roomId));
     }
 
     //댓글
     @PostMapping("/{roomId}/comment")
     public Response<Void> createComment(@PathVariable Long roomId, Authentication authentication, @RequestBody CommentRequest request) {
-        commentService.create(roomId, authentication.getName(), request);
+        MemberResponse member = (MemberResponse) authentication.getPrincipal();
+        commentService.create(roomId, member.getMemberId(), request);
         return Response.success();
     }
 
@@ -81,12 +85,14 @@ public class RoomController {
 
     @PutMapping("/comment/{commentId}")
     public Response<CommentResponse> updateComment(@PathVariable Long commentId, Authentication authentication, @RequestBody CommentRequest request) {
-        return Response.success(commentService.update(authentication.getName(), commentId, request));
+        MemberResponse member = (MemberResponse) authentication.getPrincipal();
+        return Response.success(commentService.update(member.getMemberId(), commentId, request));
     }
 
     @DeleteMapping("/comment/{commentId}")
     public Response<Void> deleteComment(@PathVariable Long commentId, Authentication authentication) {
-        commentService.delete(authentication.getName(), commentId);
+        MemberResponse member = (MemberResponse) authentication.getPrincipal();
+        commentService.delete(member.getMemberId(), commentId);
         return Response.success();
     }
 }

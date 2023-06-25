@@ -34,7 +34,8 @@ public class MemberController {
 
     @GetMapping("/wish")
     public Response<List<RoomResponse>> getAllWishListByMemberId(Authentication authentication) {
-        return Response.success(roomService.getAllWishListByMemberId(authentication.getName()));
+        MemberResponse member = (MemberResponse) authentication.getPrincipal();
+        return Response.success(roomService.getAllWishListByMemberId(member.getMemberId()));
     }
 
 }
