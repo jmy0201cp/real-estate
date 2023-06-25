@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import moment from "moment";
 import { LoginTokenContext } from "../context/LoginTokenContext";
 import httpFetch from "../network/http";
@@ -7,6 +7,24 @@ export default function Comment({ comment }) {
   const { token } = useContext(LoginTokenContext);
   const { commentId, memberName, content, createdAt } = comment;
   const [text, setText] = useState(content);
+  const [name, setName] = useState("");
+  const [admin, setAdmin] = useState(false);
+
+  useEffect(() => {
+    if (!token) {
+      return;
+    }
+    async function fetchData() {
+      const data = await httpFetch(`/members/me`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setName(data);
+    }
+    fetchData();
+  }, [name, token]);
 
   const handleChange = (e) => {
     setText(e.target.value);
@@ -50,24 +68,36 @@ export default function Comment({ comment }) {
             <span className="text-[12px] mr-2 font-semibold">{memberName}</span>
             <span className="text-[9px]">{converterDate(createdAt)}</span>
           </div>
-          <input
-            type="text"
-            name="inputComment"
-            id="inputComment"
-            value={text || ""}
-            onChange={handleChange}
-            readOnly={!token ? true : false}
-            className="bg-transparent outline-0 px-1 w-full mr-1 text-sm"
-          />
+          {memberName !== name && (
+            <div className="bg-transparent outline-0 px-1 w-full my-1 text-sm">
+              {text}
+            </div>
+          )}
+          {memberName === name && (
+            <input
+              type="text"
+              name="inputComment"
+              id="inputComment"
+              value={text || ""}
+              onChange={handleChange}
+              className="bg-transparent outline-0 px-1 w-full my-1.5 text-sm"
+            />
+          )}
         </div>
         <div className="flex justify-between">
-          <span className="text-[9px] p-1">답글달기</span>
-          {token && (
+          {admin && <span className="text-[9px] p-1">답글달기</span>}
+          {memberName === name && (
             <div>
-              <span className="text-[9px] p-1" onClick={handleUpdate}>
+              <span
+                className="text-[9px] p-1 cursor-pointer hover:font-semibold"
+                onClick={handleUpdate}
+              >
                 수정
               </span>
-              <span className="text-[9px] p-1" onClick={handleDelete}>
+              <span
+                className="text-[9px] p-1 cursor-pointer hover:font-semibold"
+                onClick={handleDelete}
+              >
                 삭제
               </span>
             </div>
