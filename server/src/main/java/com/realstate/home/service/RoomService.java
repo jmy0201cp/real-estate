@@ -22,9 +22,9 @@ public interface RoomService {
     void delete(Long roomId);
 
     //위시리스트 추가
-    void addWishList(String memberName, Long roomId);
+    void addWishList(Long memberId, Long roomId);
 
-    boolean isExistInWishList(String memberName, Long roomId);
+    boolean isExistInWishList(Long memberId, Long roomId);
 
-    List<RoomResponse> getAllWishListByMemberId(String memberName);
+    List<RoomResponse> getAllWishListByMemberId(Long memberId);
 }
