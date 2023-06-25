@@ -3,7 +3,7 @@ import moment from "moment";
 import { LoginTokenContext } from "../context/LoginTokenContext";
 import httpFetch from "../network/http";
 
-export default function Comment({ comment }) {
+export default function Comment({ comment, handleGetAlarm }) {
   const { token } = useContext(LoginTokenContext);
   const { commentId, memberName, content, createdAt } = comment;
   const [text, setText] = useState(content);
@@ -24,14 +24,14 @@ export default function Comment({ comment }) {
       setName(data);
     }
     fetchData();
-  }, [name, token]);
+    // eslint-disable-next-line
+  }, [token]);
 
   const handleChange = (e) => {
     setText(e.target.value);
   };
 
   const handleUpdate = async (e) => {
-    e.preventDefault();
     if (!window.confirm("수정하시겠습니까?")) {
       return;
     }
@@ -42,10 +42,10 @@ export default function Comment({ comment }) {
       },
       body: JSON.stringify({ content: text }),
     });
+    handleGetAlarm();
   };
 
   const handleDelete = async (e) => {
-    e.preventDefault();
     if (!window.confirm("삭제하시겠습니까?")) {
       return;
     }
@@ -55,6 +55,7 @@ export default function Comment({ comment }) {
         Authorization: `Bearer ${token}`,
       },
     });
+    handleGetAlarm();
   };
 
   return (

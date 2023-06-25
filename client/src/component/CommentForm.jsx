@@ -5,7 +5,7 @@ import { BsFillHouseHeartFill } from "react-icons/bs";
 import { LoginTokenContext } from "../context/LoginTokenContext";
 import httpFetch from "../network/http";
 
-export default function CommentForm() {
+export default function CommentForm({ handleGetAlarm }) {
   const { token } = useContext(LoginTokenContext);
   const [content, setContent] = useState("");
   const { roomId } = useParams();
@@ -32,6 +32,8 @@ export default function CommentForm() {
       },
       body: JSON.stringify({ content }),
     });
+    setContent("");
+    handleGetAlarm();
   };
   return (
     token && (
