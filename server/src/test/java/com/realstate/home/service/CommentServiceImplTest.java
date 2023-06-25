@@ -31,9 +31,6 @@ class CommentServiceImplTest {
     private CommentRepository commentRepository;
 
     @Mock
-    private MemberRepository memberRepository;
-
-    @Mock
     private RoomRepository roomRepository;
 
     /* --- 댓글 기능 ---- */
@@ -83,7 +80,7 @@ class CommentServiceImplTest {
     @Test
     void Should_InsertComment_When_RequestCreateCommentByRoomId() {
         Long roomId = 2L;
-        String memberName = "miyoung";
+        Long memberId = 1L;
         Long commentId = 1L;
 
         Member member = Member.builder()
@@ -106,15 +103,13 @@ class CommentServiceImplTest {
                 .build();
 
         //given
-        when(memberRepository.findByMemberName(memberName)).thenReturn(Optional.of(member));
         when(roomRepository.findById(roomId)).thenReturn(Optional.of(room));
         when(commentRepository.save(ArgumentMatchers.any(Comment.class))).thenReturn(entity);
 
         //when
-        commentService.create(roomId, memberName, request);
+        commentService.create(roomId, memberId, request);
 
         //then
-        assertThat(entity.getMember().getMemberName()).isSameAs(memberName);
         assertThat(entity.getRoom().getRoomId()).isSameAs(roomId);
         assertThat(entity.getCommentId()).isSameAs(commentId);
     }
@@ -124,7 +119,6 @@ class CommentServiceImplTest {
     void Should_ResponseCommentEntity_When_RequestUpdateCommentByCommentId() {
         Long commentId = 1L;
         Long memberId = 1L;
-        String memberName = "miyoung";
         String content = "보증금 조절 원합니다.";
 
         Member member = Member.builder()
@@ -148,12 +142,11 @@ class CommentServiceImplTest {
                 .build();
 
         //given
-        when(memberRepository.findByMemberName(memberName)).thenReturn(Optional.of(member));
         when(commentRepository.findById(commentId)).thenReturn(Optional.of(entity));
         when(commentRepository.save(ArgumentMatchers.any(Comment.class))).thenReturn(entity);
 
         //when
-        CommentResponse actual = commentService.update(memberName, commentId, request);
+        CommentResponse actual = commentService.update(memberId, commentId, request);
 
         //then
         assertThat(actual.getCommentId()).isSameAs(commentId);
@@ -166,7 +159,6 @@ class CommentServiceImplTest {
     void Should_Delete_When_RequestDeleteCommentByCommentId() {
         Long commentId = 1L;
         Long memberId = 1L;
-        String memberName = "miyoung";
 
         Member member = Member.builder()
                 .memberId(1L)
@@ -185,15 +177,13 @@ class CommentServiceImplTest {
                 .build();
 
         //given
-        when(memberRepository.findByMemberName(memberName)).thenReturn(Optional.of(member));
         when(commentRepository.findById(commentId)).thenReturn(Optional.of(entity));
 
         //when
-        commentService.delete(memberName, commentId);
+        commentService.delete(memberId, commentId);
 
         //then
         assertThat(entity.getMember().getMemberId()).isSameAs(memberId);
-        assertThat(entity.getMember().getMemberName()).isSameAs(memberName);
         assertThat(entity.getCommentId()).isSameAs(commentId);
     }
 

@@ -158,9 +158,18 @@ class RoomServiceImplTest {
     @Test
     void Should_ResponseRoomEntity_When_RequestUpdateRoomById() {
         Long findId = 2L;
+        ContractType contractType = ContractType.JEONSE;
 
         //given
-        Room entity = Room.builder()
+        Room beforeRoom = Room.builder()
+                .roomId(2L)
+                .url("dkfhse/gdsel.g")
+                .contractType(ContractType.MONTHLY)
+                .price(BigDecimal.valueOf(700000))
+                .managementFee(BigDecimal.valueOf(60000))
+                .build();
+
+        Room afterRoom = Room.builder()
                 .roomId(2L)
                 .url("dkfhse/gdsel.g")
                 .contractType(ContractType.JEONSE)
@@ -169,21 +178,21 @@ class RoomServiceImplTest {
                 .build();
 
         RoomRequest request = RoomRequest.builder()
-                .url("dkfhse/gdsel.g")
-                .contractType(ContractType.MONTHLY)
+                .url("dkf.g")
+                .contractType(ContractType.JEONSE)
                 .price(BigDecimal.valueOf(125000000))
                 .managementFee(BigDecimal.valueOf(70000))
                 .build();
 
-        when(roomRepository.findById(findId)).thenReturn(Optional.of(entity));
-        when(roomRepository.save(ArgumentMatchers.any(Room.class))).thenReturn(entity);
+        when(roomRepository.findById(findId)).thenReturn(Optional.of(beforeRoom));
+        when(roomRepository.save(ArgumentMatchers.any(Room.class))).thenReturn(afterRoom);
 
         //when
         RoomResponse actual = roomService.update(findId, request);
 
         //then
         assertThat(actual.getRoomId()).isSameAs(findId);
-        assertThat(actual.getContractType()).isSameAs(request.getContractType());
+        assertThat(actual.getContractType()).isSameAs(contractType);
     }
 
     @Test
@@ -206,7 +215,6 @@ class RoomServiceImplTest {
     void Should_AddWishList_When_RequestCreateInWishList() {
         Long memberId = 1L;
         Long roomId = 2L;
-        String memberName = "miyoung";
         Long wishId = 2L;
 
         Member member = Member.builder()
@@ -225,12 +233,12 @@ class RoomServiceImplTest {
                 .build();
 
         //given
-        when(memberRepository.findByMemberName(memberName)).thenReturn(Optional.of(member));
+        when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
         when(roomRepository.findById(roomId)).thenReturn(Optional.of(room));
         when(wishRepository.findByMemberAndRoom(member, room)).thenReturn(entity);
 
         //when
-        roomService.addWishList(memberName, roomId);
+        roomService.addWishList(memberId, roomId);
 
         //then
         assertThat(entity.getWishId()).isSameAs(wishId);
@@ -242,7 +250,7 @@ class RoomServiceImplTest {
     @Test
     void IsExistAlready_InWishList_When_RequestCheckWishById() {
         Long roomId = 2L;
-        String memberName = "miyoung";
+        Long memberId = 1L;
 
         Member member = Member.builder()
                 .memberId(1L)
@@ -260,12 +268,12 @@ class RoomServiceImplTest {
                 .build();
 
         //given
-        when(memberRepository.findByMemberName(memberName)).thenReturn(Optional.of(member));
+        when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
         when(roomRepository.findById(roomId)).thenReturn(Optional.of(room));
         when(wishRepository.findByMemberAndRoom(member, room)).thenReturn(entity);
 
         //when
-        Boolean actual = roomService.isExistInWishList(memberName, roomId);
+        Boolean actual = roomService.isExistInWishList(memberId, roomId);
 
         //then
         assertThat(actual).isSameAs(true);
@@ -276,7 +284,7 @@ class RoomServiceImplTest {
     void Should_ResponseWishAllList_When_RequestGetWishListByMemberName() {
         Long roomId1 = 1L;
         Long roomId2 = 2L;
-        String memberName = "miyoung";
+        Long memberId = 1L;
 
         Member member = Member.builder()
                 .memberId(1L)
@@ -304,13 +312,13 @@ class RoomServiceImplTest {
                 .build();
 
         //given
-        when(memberRepository.findByMemberName(memberName)).thenReturn(Optional.of(member));
+        when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
         when(wishRepository.findAllByMember(member)).thenReturn(Optional.of(Arrays.asList(entity1, entity2)));
         when(roomRepository.findById(roomId1)).thenReturn(Optional.of(room1));
         when(roomRepository.findById(roomId2)).thenReturn(Optional.of(room2));
 
         //when
-        List<RoomResponse> actualList = roomService.getAllWishListByMemberId(memberName);
+        List<RoomResponse> actualList = roomService.getAllWishListByMemberId(memberId);
 
         //then
         assertThat(actualList.size()).isSameAs(Arrays.asList(entity1, entity2).size());
