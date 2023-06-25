@@ -113,9 +113,9 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void addWishList(String memberName, Long roomId) {
-        Member member = memberRepository.findByMemberName(memberName).orElseThrow(() -> {
-                    throw new HomeException(ErrorCode.USER_NOT_FOUND);
+    public void addWishList(Long memberId, Long roomId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> {
+            throw new HomeException(ErrorCode.USER_NOT_FOUND);
         });
 
         Room room = getRoomEntityOrExceptionById(roomId);
@@ -130,8 +130,8 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public boolean isExistInWishList(String memberName, Long roomId) {
-        Member member = memberRepository.findByMemberName(memberName).orElseThrow(() -> {
+    public boolean isExistInWishList(Long memberId, Long roomId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> {
             throw new HomeException(ErrorCode.USER_NOT_FOUND);
         });
 
@@ -142,9 +142,9 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomResponse> getAllWishListByMemberId(String memberName) {
+    public List<RoomResponse> getAllWishListByMemberId(Long memberId) {
         //유저네임으로 있는지 확인
-        Member member = memberRepository.findByMemberName(memberName).orElseThrow(() -> {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> {
             throw new HomeException(ErrorCode.USER_NOT_FOUND);
         });
 
