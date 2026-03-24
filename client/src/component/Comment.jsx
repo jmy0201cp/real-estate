@@ -31,6 +31,7 @@ export default function Comment({ comment, handleGetAlarm }) {
     setText(e.target.value);
   };
 
+  //수정 api
   const handleUpdate = async (e) => {
     if (!window.confirm("수정하시겠습니까?")) {
       return;
