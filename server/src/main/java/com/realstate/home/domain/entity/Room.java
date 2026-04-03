@@ -33,8 +33,8 @@ public class Room extends BaseEntity {
 
     @Column(columnDefinition = "varchar(255) DEFAULT NULL COMMENT '방 이미지'")
     private String url;
-    
-    @Column(columnDefinition = "varchar(50) DEFAULT ALL COMMENT '방 타입'")
+
+    @Column(columnDefinition = "varchar(50) DEFAULT 'ALL' COMMENT '방 타입'")
     @Enumerated(EnumType.STRING)
     private RoomType roomType;
 

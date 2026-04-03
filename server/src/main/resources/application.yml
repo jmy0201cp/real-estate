@@ -5,7 +5,7 @@ spring:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/realestate?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     username: root
-    password: root123
+    password: root1234
   servlet:
     multipart:
       max-file-size: 10MB
